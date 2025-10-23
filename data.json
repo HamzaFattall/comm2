@@ -1,0 +1,496 @@
+[
+  {
+    "id": 1,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "Which of the following items can be found in UDST’s physical library collection?",
+    "options": [
+      "Music albums",
+      "Textbooks and magazines",
+      "Laboratory chemicals",
+      "Archived student projects"
+    ],
+    "answer": 1
+  },
+  {
+    "id": 2,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "Where can students search the UDST library’s physical catalog?",
+    "options": [
+      "The university intranet portal",
+      "The second search bar on the library homepage",
+      "The A–Z resources page",
+      "The student service portal"
+    ],
+    "answer": 1
+  },
+  {
+    "id": 3,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "Which tool gives access to newspapers and magazines online?",
+    "options": [
+      "PressReader",
+      "JSTOR",
+      "O’Reilly Learning",
+      "Google Scholar"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 4,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "What is one major advantage of databases compared to Google Scholar?",
+    "options": [
+      "Databases screen sources before inclusion",
+      "Databases allow anonymous submissions",
+      "Databases focus only on open-access material",
+      "Databases store personal research notes"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 5,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "In library terminology, what does a call number represent?",
+    "options": [
+      "A journal identification code",
+      "The book’s address on the library shelves",
+      "A barcode for digital login",
+      "The author’s phone number"
+    ],
+    "answer": 1
+  },
+  {
+    "id": 6,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "What can students borrow from the UDST library besides books?",
+    "options": [
+      "Cameras and magazines",
+      "Exam papers",
+      "Lab coats",
+      "Presentation slides"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 7,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "What does the “All Collections” tab on the homepage allow?",
+    "options": [
+      "Searching all databases simultaneously",
+      "Limiting searches to one database",
+      "Downloading the library catalog",
+      "Accessing librarian appointment forms"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 8,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "How can search results be refined in a database?",
+    "options": [
+      "By typing fewer words",
+      "By filtering year, type, and adding keywords",
+      "By switching to Google Scholar",
+      "By logging in with a guest account"
+    ],
+    "answer": 1
+  },
+  {
+    "id": 9,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "What best describes Keenious?",
+    "options": [
+      "An AI-powered but non-generative tool for finding sources",
+      "A peer-review database",
+      "A plagiarism detection system",
+      "A social academic network"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 10,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "How can you confirm the quality of a source found using Keenious?",
+    "options": [
+      "Check for a peer-review icon in the library homepage search",
+      "Accept any recommendation automatically",
+      "Use Wikipedia to confirm accuracy",
+      "Only read the abstract"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 11,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "Which subject guide helps students assess the quality of research sources?",
+    "options": [
+      "Evaluate – The Research Process",
+      "Citation Management 101",
+      "Writing for Publication",
+      "Data Visualization"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 12,
+    "type": "mcq",
+    "section": "Using Library Databases + Tools",
+    "q": "Which guide provides referencing help for assignments?",
+    "options": [
+      "APA 7 – Referencing Resources",
+      "EndNote for Beginners",
+      "Research Methodology",
+      "Avoiding Plagiarism"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 13,
+    "type": "mcq",
+    "section": "Critical Reading with Prompt Engineering",
+    "q": "Which AI tool specializes in summarizing academic papers?",
+    "options": [
+      "Elicit.com",
+      "ChatGPT",
+      "Grammarly",
+      "SciFinder"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 14,
+    "type": "mcq",
+    "section": "Critical Reading with Prompt Engineering",
+    "q": "Boolean operators such as AND, OR, and NOT are used to:",
+    "options": [
+      "Refine searches in library databases",
+      "Cite sources",
+      "Generate AI prompts",
+      "Evaluate tone"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 15,
+    "type": "mcq",
+    "section": "Critical Reading with Prompt Engineering",
+    "q": "Prompt engineering mainly focuses on:",
+    "options": [
+      "Writing clear and specific instructions for AI",
+      "Building neural networks",
+      "Designing webpages",
+      "Formatting APA citations"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 16,
+    "type": "mcq",
+    "section": "Critical Reading with Prompt Engineering",
+    "q": "Why do refined prompts work better than basic ones?",
+    "options": [
+      "They provide more detail and focus",
+      "They confuse AI into giving diverse results",
+      "They limit the word count",
+      "They are written in complex language"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 17,
+    "type": "mcq",
+    "section": "Critical Reading with Prompt Engineering",
+    "q": "A research question aims to:",
+    "options": [
+      "Explore a topic deeply and invite academic discussion",
+      "Get a direct and quick response",
+      "Test the AI’s creativity",
+      "Summarize secondary sources"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 18,
+    "type": "mcq",
+    "section": "Critical Reading with Prompt Engineering",
+    "q": "AI writing prompts differ because they are:",
+    "options": [
+      "Task-oriented and designed for AI systems",
+      "Always open-ended",
+      "Used only by human researchers",
+      "Written in APA format"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 19,
+    "type": "mcq",
+    "section": "Critical Reading with Prompt Engineering",
+    "q": "Which Boolean operator expands your search results?",
+    "options": [
+      "OR",
+      "AND",
+      "NOT",
+      "ONLY"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 20,
+    "type": "mcq",
+    "section": "Critical Reading with Prompt Engineering",
+    "q": "The query “climate change NOT politics” would:",
+    "options": [
+      "Exclude sources related to politics",
+      "Include political analysis only",
+      "Merge political and climate content",
+      "Show all political sources"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 21,
+    "type": "mcq",
+    "section": "Critical Reading with Prompt Engineering",
+    "q": "Which tool is best for deep academic research?",
+    "options": [
+      "Library Databases",
+      "ChatGPT",
+      "Perplexity.ai",
+      "Wikipedia"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 22,
+    "type": "mcq",
+    "section": "Critical Reading with Prompt Engineering",
+    "q": "Which AI tool provides source links that require user evaluation?",
+    "options": [
+      "Perplexity.ai",
+      "ChatGPT",
+      "Grammarly",
+      "O’Reilly"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 23,
+    "type": "mcq",
+    "section": "Finding Sources – Library vs AI Tools",
+    "q": "The CRAAP test is primarily used to:",
+    "options": [
+      "Assess source credibility and relevance",
+      "Measure reading speed",
+      "Generate APA references",
+      "Track plagiarism"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 24,
+    "type": "mcq",
+    "section": "Finding Sources – Library vs AI Tools",
+    "q": "Which of the following is not a learning goal in this module?",
+    "options": [
+      "Understanding source types",
+      "Comparing library and AI platforms",
+      "Learning basic English grammar",
+      "Using CRAAP for evaluation"
+    ],
+    "answer": 2
+  },
+  {
+    "id": 25,
+    "type": "mcq",
+    "section": "Finding Sources – Library vs AI Tools",
+    "q": "Which is an example of a primary source?",
+    "options": [
+      "A historical document or dataset",
+      "A literature review",
+      "A Wikipedia summary",
+      "A textbook"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 26,
+    "type": "mcq",
+    "section": "Finding Sources – Library vs AI Tools",
+    "q": "Secondary sources are mainly used to:",
+    "options": [
+      "Analyze or interpret primary sources",
+      "Present raw data",
+      "Generate summaries",
+      "Provide random examples"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 27,
+    "type": "mcq",
+    "section": "Finding Sources – Library vs AI Tools",
+    "q": "AI tools are considered tertiary sources because:",
+    "options": [
+      "They summarize or compile information from other sources",
+      "They perform peer review",
+      "They create original research",
+      "They verify data accuracy"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 28,
+    "type": "mcq",
+    "section": "Finding Sources – Library vs AI Tools",
+    "q": "Why should AI content be verified with other sources?",
+    "options": [
+      "AI lacks transparency and may be inaccurate",
+      "AI provides only primary data",
+      "AI results are always peer-reviewed",
+      "Verification is optional in academia"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 29,
+    "type": "mcq",
+    "section": "Finding Sources – Library vs AI Tools",
+    "q": "In the CRAAP test, “A” stands for:",
+    "options": [
+      "Accuracy",
+      "Authenticity",
+      "Availability",
+      "Acknowledgment"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 30,
+    "type": "mcq",
+    "section": "Finding Sources – Library vs AI Tools",
+    "q": "The “P” in CRAAP refers to:",
+    "options": [
+      "Purpose",
+      "Peer review",
+      "Publication",
+      "Platform"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 31,
+    "type": "mcq",
+    "section": "What is Critical Reading",
+    "q": "What is the main goal of critical reading?",
+    "options": [
+      "To evaluate and interpret information actively",
+      "To memorize the text",
+      "To summarize articles",
+      "To rephrase paragraphs"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 32,
+    "type": "mcq",
+    "section": "What is Critical Reading",
+    "q": "Critical reading requires:",
+    "options": [
+      "Both comprehension and judgment",
+      "Copying the author’s words",
+      "Passive scanning",
+      "Ignoring tone and bias"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 33,
+    "type": "mcq",
+    "section": "What is Critical Reading",
+    "q": "Which of the following questions reflects critical reading?",
+    "options": [
+      "What is the author’s purpose and tone?",
+      "How long is the text?",
+      "What font is used?",
+      "Is it easy to print?"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 34,
+    "type": "mcq",
+    "section": "What is Critical Reading",
+    "q": "What does “to infer” mean?",
+    "options": [
+      "To deduce from evidence rather than explicit statements",
+      "To summarize conclusions",
+      "To quote directly from the author",
+      "To cite an online source"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 35,
+    "type": "mcq",
+    "section": "What is Critical Reading",
+    "q": "What question helps identify the author’s perspective?",
+    "options": [
+      "What’s the author’s point of view?",
+      "When was the text printed?",
+      "What colors are used in the design?",
+      "How long is the conclusion?"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 36,
+    "type": "mcq",
+    "section": "What is Critical Reading",
+    "q": "Evaluating whether authors are credible means checking:",
+    "options": [
+      "Their expertise and background",
+      "Their social media followers",
+      "Their writing length",
+      "Their photo on the webpage"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 37,
+    "type": "mcq",
+    "section": "What is Critical Reading",
+    "q": "What helps determine if evidence is credible?",
+    "options": [
+      "Whether it supports the claim and is relevant",
+      "Whether it’s visually appealing",
+      "Whether it’s cited on Wikipedia",
+      "Whether it’s brief and simple"
+    ],
+    "answer": 0
+  },
+  {
+    "id": 38,
+    "type": "mcq",
+    "section": "What is Critical Reading",
+    "q": "Why should a reader assess bias?",
+    "options": [
+      "To understand if the author’s argument is fair",
+      "To confirm publication date",
+      "To improve formatting",
+      "To rewrite in simpler words"
+    ],
+    "answer": 0
+  }
+]

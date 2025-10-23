@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DACS4101 - Security Engineering Principles Quiz</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0e0e0e, #1a1a2e);
+      color: #f0f0f0;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: rgba(28, 28, 44, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+    
+    header {
+      background: linear-gradient(90deg, #00ffcc, #00cca3);
+      color: #000;
+      padding: 25px;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+    
+    .quiz-info {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 25px;
+      background: #222233;
+      border-bottom: 1px solid #333344;
+    }
+    
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .info-label {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+    
+    .info-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #00ffcc;
+    }
+    
+    .quiz-container {
+      display: flex;
+      min-height: 500px;
+    }
+    
+    .sidebar {
+      width: 330px;
+      min-width: 330px;
+      background: #1a1a2e;
+      padding: 20px;
+      border-right: 1px solid #333344;
+      overflow-y: auto;
+    }
+    
+    .question-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .question-nav-btn {
+      width: 100%;
+      height: 40px;
+      background: #222233;
+      border: 1px solid #333344;
+      color: #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    
+    .question-nav-btn:hover {
+      background: #333344;
+    }
+    
+    .question-nav-btn.active {
+      background: #00ffcc;
+      color: #000;
+      border-color: #00cca3;
+    }
+    
+    .question-nav-btn.answered {
+      background: #0066cc;
+      color: #fff;
+    }
+    
+    .main-content {
+      flex: 1;
+      padding: 30px 35px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      min-width: 0;
+    }
+    
+    .question-section {
+      flex: 1;
+    }
+    
+    .question-number {
+      font-size: 1.2rem;
+      color: #00ffcc;
+      margin-bottom: 15px;
+    }
+    
+    .question-text {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      word-wrap: break-word;
+    }
+    
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: #222233;
+      border: 1px solid #333344;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .option:hover {
+      background: #2a2a3a;
+    }
+    
+    .option.selected {
+      background: #0066cc;
+      border-color: #00aaff;
+    }
+    
+    .option input {
+      margin-right: 12px;
+    }
+    
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    
+    button {
+      background: #00ffcc;
+      color: #000;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    button:hover {
+      background: #00cca3;
+      transform: translateY(-2px);
+    }
+    
+    button:disabled {
+      background: #555;
+      color: #999;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .submit-section {
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #333344;
+    }
+    
+    #submit-btn {
+      background: #ff3366;
+      color: white;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+    }
+    
+    #submit-btn:hover {
+      background: #e62e5c;
+    }
+    
+    .result-section {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .result-title {
+      font-size: 2rem;
+      color: #00ffcc;
+      margin-bottom: 20px;
+    }
+    
+    .score {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #00ffcc;
+      margin: 20px 0;
+    }
+    
+    .score-text {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    
+    .restart-btn {
+      background: #00ffcc;
+      color: #000;
+      margin: 0 auto;
+    }
+    
+    .wrong-answers {
+      text-align: left;
+      margin: 30px 0;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .wrong-answer-item {
+      background: rgba(255, 50, 50, 0.1);
+      border-left: 4px solid #ff3232;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    
+    .wrong-answer-header {
+      font-weight: bold;
+      color: #ff3232;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    
+    .wrong-answer-question {
+      margin-bottom: 15px;
+      font-size: 1rem;
+      color: #f0f0f0;
+    }
+    
+    .wrong-answer-detail {
+      margin: 8px 0;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    
+    .your-answer {
+      background: rgba(255, 50, 50, 0.2);
+      color: #ff6666;
+    }
+    
+    .correct-answer {
+      background: rgba(0, 255, 204, 0.2);
+      color: #00ffcc;
+    }
+    
+    .category-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #333344;
+    }
+    
+    .category-tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    
+    .category-tab.active {
+      border-bottom: 3px solid #00ffcc;
+      color: #00ffcc;
+    }
+    
+    @media (max-width: 768px) {
+      .quiz-container {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #333344;
+      }
+      
+      .question-nav {
+        grid-template-columns: repeat(10, 1fr);
+      }
+      
+      .question-nav-btn {
+        height: 30px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>CPS & ICS - Cyber-Physical Systems Quiz</h1>
+      <div class="subtitle">Comprehensive Quiz - 130 Questions</div>
+    </header>
+    
+    <div class="quiz-info">
+      <div class="info-item">
+        <span class="info-label">Questions</span>
+        <span class="info-value" id="questions-count">0</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Time</span>
+        <span class="info-value">Unlimited</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Category</span>
+        <span class="info-value">CPS & ICS</span>
+      </div>
+    </div>
+    
+    
+    <div class="quiz-container">
+      <div class="sidebar">
+        <h3>Question Navigation</h3>
+        <div class="question-nav" id="question-nav">
+          <!-- Question navigation buttons will be generated here -->
+        </div>
+      </div>
+      
+      <div class="main-content">
+        <div class="category-tabs" id="type-tabs">
+          <div class="category-tab active" data-type="all">All Questions</div>
+          <div class="category-tab" data-type="objective">MCQ / Multi / True-False</div>
+          <div class="category-tab" data-type="written">Short & Long Answer</div>
+          <div class="category-tab" data-type="matching">Matching</div>
+        </div>
+        <div class="question-section" id="question-section">
+          <div class="question-number">Question <span id="current-q">1</span> of <span id="total-q">0</span></div>
+          <div class="question-text" id="question-text"></div>
+          
+          <div class="options-container" id="options-container">
+            <!-- Options will be generated here -->
+          </div>
+          
+          <div class="navigation">
+            <button id="prev-btn" disabled>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Previous
+            </button>
+            <button id="next-btn">
+              Next
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="submit-section">
+          <button id="submit-btn">Submit Quiz</button>
+        </div>
+        
+        <div class="result-section" id="result-section">
+          <h2 class="result-title">Quiz Completed!</h2>
+          <div class="score" id="score">0/150</div>
+          <div class="score-text" id="score-text"></div>
+          <div id="wrong-answers" class="wrong-answers"></div>
+          <button class="restart-btn" id="restart-btn">Restart Quiz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // CPS & ICS Question Bank - All 130 Questions
+  let quizData = []; // Will be loaded from JSON file
+  let activeQuizData = []; // Current subset based on filters
+  let activeTypeFilter = 'all';
+
+    // Initialize variables
+    let currentQuestion = 0;
+    let userAnswers = [];
+    let score = 0;
+    let shuffledQuizData = []; // Will hold shuffled versions of questions
+
+    // Utility: Fisher-Yates shuffle
+    function shuffleArray(array) {
+      const arr = array.slice();
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Shuffle options for MCQ/TF/Multi questions and track correct answer mapping
+    function initializeShuffledQuiz(sourceData = activeQuizData) {
+      shuffledQuizData = sourceData.map(q => {
+        if (!q) {
+          return q;
+        }
+
+        if (q.type === 'tf') {
+          // Add True/False options for TF questions
+          const options = ['True', 'False'];
+          const originalAnswer = q.answer;
+          let answerIndex = 0;
+          if (typeof originalAnswer === 'boolean') {
+            answerIndex = originalAnswer ? 0 : 1;
+          } else if (typeof originalAnswer === 'number') {
+            answerIndex = Number(originalAnswer) === 0 ? 0 : 1;
+          } else if (typeof originalAnswer === 'string') {
+            const normalized = originalAnswer.trim().toLowerCase();
+            if (normalized === 'true' || normalized === 't' || normalized === 'yes') {
+              answerIndex = 0;
+            } else if (normalized === 'false' || normalized === 'f' || normalized === 'no') {
+              answerIndex = 1;
+            } else if (normalized === '0') {
+              answerIndex = 0;
+            } else if (normalized === '1') {
+              answerIndex = 1;
+            } else {
+              answerIndex = 0;
+            }
+          }
+          return { ...q, options, answer: answerIndex, originalAnswer };
+        }
+
+        if (q.type === 'mcq' && Array.isArray(q.options)) {
+          // Shuffle options and remap answer index
+          const indices = q.options.map((_, i) => i);
+          const shuffledIndices = shuffleArray(indices);
+          const shuffledOptions = shuffledIndices.map(i => q.options[i]);
+          const origIndexRaw = Number.isFinite(q.answer) ? q.answer : Number(q.answer);
+          const hasValidOrigIndex = Number.isFinite(origIndexRaw) && origIndexRaw >= 0;
+          const newAnswerIndex = hasValidOrigIndex ? shuffledIndices.indexOf(origIndexRaw) : -1;
+          const safeAnswerIndex = newAnswerIndex >= 0 ? newAnswerIndex : null;
+          return {
+            ...q,
+            options: shuffledOptions,
+            answer: safeAnswerIndex,
+            originalAnswer: q.answer,
+            manual: q.manual || safeAnswerIndex === null
+          };
+        }
+
+        if (q.type === 'multi' && Array.isArray(q.options)) {
+          // Shuffle options and remap answer indices array
+          const indices = q.options.map((_, i) => i);
+          const shuffledIndices = shuffleArray(indices);
+          const shuffledOptions = shuffledIndices.map(i => q.options[i]);
+          const answerArray = Array.isArray(q.answer) ? q.answer : [];
+          const normalizedAnswers = answerArray
+            .map(val => (Number.isFinite(val) ? val : Number(val)))
+            .filter(idx => !Number.isNaN(idx) && idx >= 0);
+          const newAnswerIndices = normalizedAnswers
+            .map(origIdx => shuffledIndices.indexOf(origIdx))
+            .filter(idx => idx >= 0);
+          const isValid = newAnswerIndices.length > 0;
+          return {
+            ...q,
+            options: shuffledOptions,
+            answer: newAnswerIndices,
+            originalAnswer: q.answer,
+            manual: q.manual || !isValid
+          };
+        }
+
+        // Match, fib, essay questions don\'t need shuffling
+        return { ...q };
+      });
+    }
+
+    // DOM elements
+    const questionNav = document.getElementById('question-nav');
+    const currentQElement = document.getElementById('current-q');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const resultSection = document.getElementById('result-section');
+    const scoreElement = document.getElementById('score');
+    const scoreText = document.getElementById('score-text');
+    const restartBtn = document.getElementById('restart-btn');
+    const categoryTabs = document.querySelectorAll('.category-tab');
+    const questionSection = document.getElementById('question-section');
+    const submitSection = document.querySelector('.submit-section');
+  const totalQElement = document.getElementById('total-q');
+  const questionsCountElement = document.getElementById('questions-count');
+
+        function getFilteredQuestionsByType(filter) {
+          switch (filter) {
+            case 'objective':
+              return quizData.filter(q => ['mcq', 'multi', 'tf', 'fill'].includes(q.type));
+            case 'written':
+              return quizData.filter(q => ['short', 'long', 'essay', 'fib'].includes(q.type));
+            case 'matching':
+              return quizData.filter(q => ['match', 'matching'].includes(q.type));
+            case 'all':
+            default:
+              return quizData.slice();
+          }
+        }
+
+        function isAnswerProvided(value) {
+          if (Array.isArray(value)) {
+            return value.some(item => {
+              if (Array.isArray(item)) {
+                return item.length > 0;
+              }
+              if (typeof item === 'string') {
+                return item.trim() !== '';
+              }
+              return item !== null && item !== undefined && item !== '';
+            });
+          }
+
+          if (typeof value === 'string') {
+            return value.trim() !== '';
+          }
+
+          return value !== null && value !== undefined;
+        }
+
+        function applyTypeFilter(filter) {
+          activeTypeFilter = filter;
+          categoryTabs.forEach(tab => {
+            const tabType = tab.getAttribute('data-type');
+            if (tabType) {
+              tab.classList.toggle('active', tabType === filter);
+            }
+          });
+
+          activeQuizData = getFilteredQuestionsByType(filter);
+
+          if (activeQuizData.length === 0) {
+            shuffledQuizData = [];
+            userAnswers = [];
+            initQuestionNav();
+            showQuestion();
+            updateNavigation();
+            return;
+          }
+
+          initializeShuffledQuiz(activeQuizData);
+          userAnswers = new Array(shuffledQuizData.length).fill(null);
+          currentQuestion = 0;
+          initQuestionNav();
+          showQuestion();
+          updateNavigation();
+        }
+
+    // Initialize question navigation
+    function initQuestionNav() {
+      questionNav.innerHTML = '';
+      const totalQuestions = shuffledQuizData.length;
+      totalQElement.textContent = totalQuestions;
+      questionsCountElement.textContent = totalQuestions;
+
+      if (totalQuestions === 0) {
+        return;
+      }
+
+      for (let i = 0; i < totalQuestions; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'question-nav-btn';
+        if (i === currentQuestion) {
+          btn.classList.add('active');
+        }
+        if (userAnswers[i] !== null) {
+          btn.classList.add('answered');
+        }
+        btn.textContent = i + 1;
+        btn.addEventListener('click', () => {
+          currentQuestion = i;
+          showQuestion();
+          updateNavigation();
+        });
+        questionNav.appendChild(btn);
+      }
+    }
+
+    // Show current question
+    function showQuestion() {
+      if (!shuffledQuizData || shuffledQuizData.length === 0) {
+        console.error('shuffledQuizData is empty or undefined!');
+        currentQElement.textContent = 0;
+        totalQElement.textContent = 0;
+        questionText.innerHTML = '<p style="color: #ff6b6b;">No questions available for the selected practice filter.</p>';
+        optionsContainer.innerHTML = '';
+        updateNavigation();
+        return;
+      }
+      if (currentQuestion >= shuffledQuizData.length) {
+        currentQuestion = shuffledQuizData.length - 1;
+      }
+      if (currentQuestion < 0) {
+        currentQuestion = 0;
+      }
+      const question = shuffledQuizData[currentQuestion];
+      if (!question) {
+        console.error('Question not found at index:', currentQuestion);
+        return;
+      }
+      currentQElement.textContent = currentQuestion + 1;
+      totalQElement.textContent = shuffledQuizData.length;
+      const questionContent = question.question || question.prompt || question.text || question.q;
+      questionText.textContent = questionContent || 'Question text unavailable';
+
+      optionsContainer.innerHTML = '';
+
+      // Render based on question type
+      if (question.type === 'mcq' || question.type === 'tf') {
+        question.options.forEach((option, index) => {
+          const optionElement = document.createElement('div');
+          optionElement.className = 'option';
+          if (userAnswers[currentQuestion] === index) optionElement.classList.add('selected');
+
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.name = 'option';
+          input.value = index;
+          input.checked = userAnswers[currentQuestion] === index;
+
+          const label = document.createElement('label');
+          label.textContent = option;
+
+          optionElement.appendChild(input);
+          optionElement.appendChild(label);
+
+          optionElement.addEventListener('click', () => {
+            userAnswers[currentQuestion] = index;
+            showQuestion();
+            updateNavigation();
+          });
+
+          optionsContainer.appendChild(optionElement);
+        });
+      } else if (question.type === 'multi') {
+        question.options.forEach((option, index) => {
+          const optionElement = document.createElement('div');
+          optionElement.className = 'option';
+
+          const input = document.createElement('input');
+          input.type = 'checkbox';
+          input.name = 'option-multi';
+          input.value = index;
+          if (Array.isArray(userAnswers[currentQuestion]) && userAnswers[currentQuestion].includes(index)) {
+            optionElement.classList.add('selected');
+            input.checked = true;
+          }
+
+          const label = document.createElement('label');
+          label.textContent = option;
+
+          optionElement.appendChild(input);
+          optionElement.appendChild(label);
+
+          optionElement.addEventListener('click', (e) => {
+            // toggle
+            const arr = Array.isArray(userAnswers[currentQuestion]) ? userAnswers[currentQuestion].slice() : [];
+            const pos = arr.indexOf(index);
+            if (pos === -1) arr.push(index); else arr.splice(pos,1);
+            userAnswers[currentQuestion] = arr;
+            showQuestion();
+            updateNavigation();
+          });
+
+          optionsContainer.appendChild(optionElement);
+        });
+      } else if (question.type === 'match' || question.type === 'matching') {
+        // Render professional match UI: left item with dropdown of right-side options
+        const grid = document.createElement('div');
+        grid.style.display = 'grid';
+        grid.style.gridTemplateColumns = '1fr 1fr';
+        grid.style.gap = '12px';
+        grid.style.alignItems = 'center';
+
+        // header row
+        const leftHeader = document.createElement('div'); leftHeader.textContent = 'Item'; leftHeader.style.fontWeight = '600';
+        const rightHeader = document.createElement('div'); rightHeader.textContent = 'Match'; rightHeader.style.fontWeight = '600';
+        grid.appendChild(leftHeader); grid.appendChild(rightHeader);
+
+        // Support both matchLeft/matchRight and left/right property names
+  const leftItems = question.matchLeft || question.left || (Array.isArray(question.pairs) ? question.pairs.map(p => p.left) : []);
+  const rightItemsRaw = question.matchRight || question.right || (Array.isArray(question.pairs) ? question.pairs.map(p => p.right) : []);
+  const rightItems = Array.isArray(rightItemsRaw) ? rightItemsRaw : [];
+        
+        const numLeft = leftItems.length;
+        for (let i = 0; i < numLeft; i++) {
+          const leftDiv = document.createElement('div'); leftDiv.textContent = leftItems[i];
+          const selectDiv = document.createElement('div');
+          const select = document.createElement('select');
+          select.style.width = '100%';
+          select.dataset.index = i;
+          const placeholderOpt = document.createElement('option'); placeholderOpt.value = '';
+          placeholderOpt.textContent = 'Select...';
+          select.appendChild(placeholderOpt);
+          rightItems.forEach((r, idx) => {
+            const opt = document.createElement('option'); opt.value = idx; opt.textContent = r; select.appendChild(opt);
+          });
+
+          // prefill
+          if (Array.isArray(userAnswers[currentQuestion]) && userAnswers[currentQuestion][i] !== undefined) {
+            select.value = userAnswers[currentQuestion][i];
+          }
+
+          select.addEventListener('change', (e) => {
+            const arr = Array.isArray(userAnswers[currentQuestion]) ? userAnswers[currentQuestion].slice() : new Array(numLeft).fill('');
+            arr[i] = e.target.value === '' ? '' : parseInt(e.target.value,10);
+            userAnswers[currentQuestion] = arr;
+            updateNavigation();
+          });
+
+          selectDiv.appendChild(select);
+          grid.appendChild(leftDiv);
+          grid.appendChild(selectDiv);
+        }
+
+        optionsContainer.appendChild(grid);
+
+      } else if (question.type === 'fill') {
+        // Fill-in-the-blank with multiple choice options (like multi-select from a list)
+        const instruction = document.createElement('div');
+        instruction.style.marginBottom = '15px';
+        instruction.style.color = '#aaa';
+        instruction.textContent = `Select ${question.blanks || question.options.length} option(s):`;
+        optionsContainer.appendChild(instruction);
+        
+        question.options.forEach((option, index) => {
+          const optionElement = document.createElement('div');
+          optionElement.className = 'option';
+
+          const input = document.createElement('input');
+          input.type = 'checkbox';
+          input.name = 'option-fill';
+          input.value = index;
+          if (Array.isArray(userAnswers[currentQuestion]) && userAnswers[currentQuestion].includes(index)) {
+            optionElement.classList.add('selected');
+            input.checked = true;
+          }
+
+          const label = document.createElement('label');
+          label.textContent = option;
+
+          optionElement.appendChild(input);
+          optionElement.appendChild(label);
+
+          optionElement.addEventListener('click', (e) => {
+            // toggle
+            const arr = Array.isArray(userAnswers[currentQuestion]) ? userAnswers[currentQuestion].slice() : [];
+            const pos = arr.indexOf(index);
+            if (pos === -1) arr.push(index); else arr.splice(pos,1);
+            userAnswers[currentQuestion] = arr;
+            showQuestion();
+            updateNavigation();
+          });
+
+          optionsContainer.appendChild(optionElement);
+        });
+      } else if (question.type === 'fib' || question.type === 'essay' || question.type === 'short' || question.type === 'long') {
+        // Text input for fill-in-blank, essay, short, and long answer questions
+        const textarea = document.createElement('textarea');
+        textarea.style.width = '100%';
+        textarea.style.minHeight = (question.type === 'fib' || question.type === 'short') ? '60px' : '120px';
+        textarea.style.padding = '12px';
+        textarea.style.borderRadius = '8px';
+        textarea.style.border = '1px solid #333344';
+        textarea.style.background = '#0f1628';
+        textarea.style.color = '#f0f0f0';
+        textarea.style.fontSize = '14px';
+        textarea.style.fontFamily = 'inherit';
+        textarea.style.resize = 'vertical';
+        
+        if (question.type === 'fib' || question.type === 'short') {
+          textarea.placeholder = 'Type your answer here...';
+        } else {
+          textarea.placeholder = 'Write your answer here. This will require manual grading.';
+        }
+        
+        if (userAnswers[currentQuestion]) textarea.value = userAnswers[currentQuestion];
+        
+        textarea.addEventListener('input', () => {
+          userAnswers[currentQuestion] = textarea.value;
+          updateNavigation();
+        });
+        
+        optionsContainer.appendChild(textarea);
+      }
+      
+      updateNavigation();
+    }
+
+    // Update navigation buttons and question nav
+    function updateNavigation() {
+      // Update prev/next buttons
+      prevBtn.disabled = currentQuestion === 0 || shuffledQuizData.length === 0;
+      nextBtn.disabled = currentQuestion >= shuffledQuizData.length - 1 || shuffledQuizData.length === 0;
+      submitBtn.disabled = shuffledQuizData.length === 0;
+      
+      // Update question nav buttons
+      const navButtons = document.querySelectorAll('.question-nav-btn');
+      navButtons.forEach((btn, index) => {
+        btn.classList.remove('active');
+        if (index === currentQuestion) {
+          btn.classList.add('active');
+        }
+        
+        if (isAnswerProvided(userAnswers[index])) {
+          btn.classList.add('answered');
+        } else {
+          btn.classList.remove('answered');
+        }
+      });
+    }
+
+    // Calculate and show results
+    function showResults() {
+      if (!shuffledQuizData || shuffledQuizData.length === 0) {
+        console.warn('Attempted to show results with no questions.');
+        return;
+      }
+      console.log('Submit button clicked - calculating results...');
+      score = 0;
+      const wrongAnswers = [];
+      
+      for (let i = 0; i < shuffledQuizData.length; i++) {
+        const q = shuffledQuizData[i];
+        const ua = userAnswers[i];
+        if (q.manual || q.type === 'essay' || q.type === 'long') {
+          // skip auto-grading for manual items, essays, and long answers
+          continue;
+        }
+
+        if (q.type === 'mcq' || q.type === 'tf') {
+          if (ua === q.answer) {
+            score += (q.points || 1);
+          } else {
+            wrongAnswers.push({ questionNum: i+1, question: q, userAnswer: ua, correctAnswer: q.answer });
+          }
+        } else if (q.type === 'fib' || q.type === 'short') {
+          // Fill-in-blank or short answer: check if answer matches (case-insensitive, trimmed)
+          const userAns = (ua || '').toString().trim().toLowerCase();
+          let correct = false;
+          
+          if (Array.isArray(q.answer)) {
+            // Multiple acceptable answers
+            correct = q.answer.some(ans => ans.toString().trim().toLowerCase() === userAns);
+          } else {
+            // Single answer
+            correct = q.answer.toString().trim().toLowerCase() === userAns;
+          }
+          
+          if (correct) {
+            score += (q.points || 1);
+          } else {
+            wrongAnswers.push({ questionNum: i+1, question: q, userAnswer: ua, correctAnswer: q.answer });
+          }
+        } else if (q.type === 'multi' || q.type === 'fill') {
+          const questionPoints = q.points || 1;
+          const correctArray = Array.isArray(q.answer) ? q.answer.slice().sort() : [];
+          const givenArray = Array.isArray(ua) ? ua.slice().sort() : [];
+          const correctKey = correctArray.toString();
+          const givenKey = givenArray.toString();
+
+          if (q.grading === 'partial') {
+            const matches = givenArray.filter(x => correctArray.includes(x)).length;
+            const incorrectSelections = givenArray.filter(x => !correctArray.includes(x)).length;
+            const net = matches - incorrectSelections;
+            const fraction = correctArray.length > 0 ? Math.max(net, 0) / correctArray.length : 0;
+            if (fraction > 0) {
+              score += fraction * questionPoints;
+            }
+            if (fraction < 1) {
+              wrongAnswers.push({ questionNum: i+1, question: q, userAnswer: ua, correctAnswer: q.answer });
+            }
+          } else {
+            if (correctKey === givenKey) {
+              score += questionPoints;
+            } else {
+              wrongAnswers.push({ questionNum: i+1, question: q, userAnswer: ua, correctAnswer: q.answer });
+            }
+          }
+        } else if (q.type === 'match' || q.type === 'matching') {
+          // compare array of selected right indices to expected answer array
+          if (Array.isArray(ua)) {
+            const cleanUa = ua.map(x => typeof x === 'string' && x!=='' ? parseInt(x,10) : x);
+            let allMatch = true;
+            if (cleanUa.length !== q.answer.length) allMatch = false;
+            else {
+              for (let k=0;k<q.answer.length;k++) {
+                if (cleanUa[k] !== q.answer[k]) { allMatch = false; break; }
+              }
+            }
+            if (allMatch) score += (q.points || 1);
+            else wrongAnswers.push({ questionNum: i+1, question: q, userAnswer: ua, correctAnswer: q.answer });
+          } else {
+            wrongAnswers.push({ questionNum: i+1, question: q, userAnswer: ua, correctAnswer: q.answer });
+          }
+        }
+      }
+      
+      // compute max auto score (exclude manual items)
+      const maxAuto = shuffledQuizData.reduce((sum,q)=> sum + (q.manual || q.type === 'essay' || q.type === 'long' ? 0 : (q.points||1)),0);
+      if (maxAuto > 0) {
+        const formattedScore = Number.isInteger(score) ? score : score.toFixed(2);
+        const formattedMax = Number.isInteger(maxAuto) ? maxAuto : maxAuto.toFixed(2);
+        scoreElement.textContent = `${formattedScore}/${formattedMax} (auto-graded)`;
+      } else {
+        scoreElement.textContent = 'Auto-graded score: N/A';
+      }
+
+      const percentage = maxAuto > 0 ? (score / maxAuto) * 100 : 0;
+      if (percentage >= 90) {
+        scoreText.textContent = 'Excellent! You have a strong understanding of Security Engineering Principles.';
+      } else if (percentage >= 80) {
+        scoreText.textContent = 'Great job! You have a good grasp of the material.';
+      } else if (percentage >= 70) {
+        scoreText.textContent = 'Good effort! Review the questions you missed to improve.';
+      } else if (percentage >= 60) {
+        scoreText.textContent = 'You passed, but there\'s room for improvement. Review the material.';
+      } else {
+        scoreText.textContent = 'Keep studying! Review the course material and try again.';
+      }
+      
+      // Display wrong answers
+      const wrongAnswersContainer = document.getElementById('wrong-answers');
+      wrongAnswersContainer.innerHTML = '';
+      
+      if (wrongAnswers.length > 0) {
+        const header = document.createElement('h3');
+        header.style.color = '#ff3232';
+        header.style.marginBottom = '20px';
+        header.textContent = `Questions to Review (${wrongAnswers.length} incorrect)`;
+        wrongAnswersContainer.appendChild(header);
+        
+        wrongAnswers.forEach(item => {
+          const wrongItem = document.createElement('div');
+          wrongItem.className = 'wrong-answer-item';
+          
+          const questionHeader = document.createElement('div');
+          questionHeader.className = 'wrong-answer-header';
+          questionHeader.textContent = `Question ${item.questionNum}`;
+          
+          const questionText = document.createElement('div');
+          questionText.className = 'wrong-answer-question';
+          const questionTextContent = item.question.question || item.question.prompt || item.question.text || item.question.q || 'Question text unavailable';
+          questionText.textContent = questionTextContent;
+          
+          const yourAnswerDiv = document.createElement('div');
+          yourAnswerDiv.className = 'wrong-answer-detail your-answer';
+          if (item.userAnswer !== null && item.userAnswer !== undefined && item.userAnswer !== '') {
+            if (item.question.type === 'match' || item.question.type === 'matching') {
+              // display mapping
+              const ua = item.userAnswer;
+              const lines = [];
+              if (Array.isArray(ua)) {
+                const leftItems = item.question.matchLeft || item.question.left;
+                const rightItems = item.question.matchRight || item.question.right;
+                for (let k=0;k<ua.length;k++) {
+                  const left = leftItems[k] || (`Left ${k+1}`);
+                  const right = (typeof ua[k] === 'number' && rightItems[ua[k]]) ? rightItems[ua[k]] : '(no selection)';
+                  lines.push(`${left} → ${right}`);
+                }
+              }
+              yourAnswerDiv.innerHTML = `<strong>Your Answer:</strong><br>${lines.join('<br>')}`;
+            } else if (item.question.type === 'multi' || item.question.type === 'fill') {
+              const ua = Array.isArray(item.userAnswer) ? item.userAnswer.map(i => item.question.options[i]).join(', ') : item.userAnswer;
+              yourAnswerDiv.innerHTML = `<strong>Your Answer:</strong> ${ua}`;
+            } else if (item.question.type === 'fib' || item.question.type === 'essay' || item.question.type === 'short' || item.question.type === 'long') {
+              yourAnswerDiv.innerHTML = `<strong>Your Answer:</strong> ${item.userAnswer}`;
+            } else {
+              yourAnswerDiv.innerHTML = `<strong>Your Answer:</strong> ${item.question.options[item.userAnswer]}`;
+            }
+          } else {
+            yourAnswerDiv.innerHTML = `<strong>Your Answer:</strong> (No answer selected)`;
+          }
+
+          const correctAnswerDiv = document.createElement('div');
+          correctAnswerDiv.className = 'wrong-answer-detail correct-answer';
+          if (item.question.type === 'match' || item.question.type === 'matching') {
+            const leftItems = item.question.matchLeft || item.question.left || (Array.isArray(item.question.pairs) ? item.question.pairs.map(p => p.left) : []);
+            const rightItems = item.question.matchRight || item.question.right || (Array.isArray(item.question.pairs) ? item.question.pairs.map(p => p.right) : []);
+            const answerArray = Array.isArray(item.question.answer) ? item.question.answer : [];
+            const lines = answerArray.map((rIdx,leftIdx) => `${leftItems[leftIdx]} → ${rightItems[rIdx]}`);
+            correctAnswerDiv.innerHTML = `<strong>Correct Answer:</strong><br>${lines.join('<br>')}`;
+          } else if (item.question.type === 'multi' || item.question.type === 'fill') {
+            const answerArray = Array.isArray(item.question.answer) ? item.question.answer : [];
+            const ca = answerArray.map(i => item.question.options[i]).join(', ');
+            correctAnswerDiv.innerHTML = `<strong>Correct Answer:</strong> ${ca}`;
+          } else if (item.question.type === 'fib' || item.question.type === 'short') {
+            const ans = Array.isArray(item.question.answer) ? item.question.answer.join(' OR ') : item.question.answer;
+            correctAnswerDiv.innerHTML = `<strong>Correct Answer:</strong> ${ans}`;
+          } else if (item.question.type === 'tf') {
+            correctAnswerDiv.innerHTML = `<strong>Correct Answer:</strong> ${item.question.options[item.question.answer]}`;
+          } else {
+            correctAnswerDiv.innerHTML = `<strong>Correct Answer:</strong> ${item.question.options[item.question.answer] || item.question.options[item.correctAnswer]}`;
+          }
+          
+          wrongItem.appendChild(questionHeader);
+          wrongItem.appendChild(questionText);
+          wrongItem.appendChild(yourAnswerDiv);
+          wrongItem.appendChild(correctAnswerDiv);
+          
+          wrongAnswersContainer.appendChild(wrongItem);
+        });
+      } else {
+        const perfectScore = document.createElement('div');
+        perfectScore.style.color = '#00ffcc';
+        perfectScore.style.fontSize = '1.2rem';
+        perfectScore.style.marginTop = '20px';
+        perfectScore.textContent = '🎉 Perfect auto-graded score! You got all auto-graded questions correct!';
+        wrongAnswersContainer.appendChild(perfectScore);
+      }
+
+      // If there are manual questions or essays, list them for instructor grading
+  const manualItems = shuffledQuizData.map((q,idx)=> ({q,idx})).filter(x=>x.q.manual || x.q.type === 'essay' || x.q.type === 'long');
+      if (manualItems.length>0) {
+        const header = document.createElement('h3');
+        header.style.color = '#00ffcc';
+        header.style.marginTop = '20px';
+        header.textContent = `Manual grading required for ${manualItems.length} question(s)`;
+        wrongAnswersContainer.appendChild(header);
+
+        manualItems.forEach(item=>{
+          const div = document.createElement('div');
+          div.className = 'wrong-answer-item';
+          const h = document.createElement('div'); h.className='wrong-answer-header'; h.textContent = `Question ${item.idx+1} (manual)`;
+          const qt = document.createElement('div'); qt.className='wrong-answer-question';
+          const manualQuestionText = item.q.question || item.q.prompt || item.q.text || item.q.q || 'Question text unavailable';
+          qt.textContent = manualQuestionText;
+          const your = document.createElement('div'); your.className='wrong-answer-detail'; your.innerHTML = `<strong>Your Answer:</strong> ${userAnswers[item.idx] || '(No answer)'}`;
+          div.appendChild(h); div.appendChild(qt); div.appendChild(your);
+          wrongAnswersContainer.appendChild(div);
+        });
+      }
+      
+      const manualCount = shuffledQuizData.filter(q => q.manual || q.type === 'essay' || q.type === 'long').length;
+      if (manualCount > 0) {
+        const manualNotice = document.createElement('div');
+        manualNotice.style.color = '#ffa500';
+        manualNotice.style.marginTop = '15px';
+        manualNotice.textContent = `Note: ${manualCount} question${manualCount === 1 ? '' : 's'} require manual grading.`;
+        wrongAnswersContainer.appendChild(manualNotice);
+      }
+
+      if (maxAuto === 0) {
+        scoreText.textContent = 'All selected questions require manual grading. Review your responses and assess them separately.';
+      }
+
+      questionSection.style.display = 'none';
+      submitSection.style.display = 'none';
+      resultSection.style.display = 'block';
+      console.log('Results displayed successfully. Score:', score);
+    }
+
+    // Restart quiz
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+
+      applyTypeFilter(activeTypeFilter);
+
+      questionSection.style.display = 'block';
+      submitSection.style.display = 'block';
+      resultSection.style.display = 'none';
+    }
+
+    // Event listeners
+    prevBtn.addEventListener('click', () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentQuestion < shuffledQuizData.length - 1) {
+        currentQuestion++;
+        showQuestion();
+      }
+    });
+
+    submitBtn.addEventListener('click', showResults);
+    
+    restartBtn.addEventListener('click', restartQuiz);
+    
+    // Category tabs
+    categoryTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabType = tab.getAttribute('data-type') || 'all';
+        if (tabType === activeTypeFilter) {
+          return;
+        }
+        applyTypeFilter(tabType);
+      });
+    });
+
+    
+
+    
+    // Embedded quiz data (auto-generated)
+    window.EMBEDDED_QUIZ_DATA = [{"id": 1, "type": "mcq", "question": "Which of the following best describes the integration of cyber and physical components in a Cyber-Physical System (CPS)?", "options": ["Loose coupling with minimal interaction", "Tight integration with seamless operation", "Separate systems working independently", "Occasional data exchange between components"], "correctAnswer": 1, "answer": 1}, {"id": 2, "type": "mcq", "question": "Explain how Cyber-Physical Systems differ from Internet of Things (IoT) systems:", "options": ["CPS focuses solely on data collection, while IoT emphasizes control", "CPS is limited to small-scale applications, unlike IoT", "CPS adds control, computation, and human interaction to communication networks", "IoT systems are more complex and integrated than CPS"], "correctAnswer": 2, "answer": 2}, {"id": 3, "type": "mcq", "question": "Which statement best describes the role of the \"cyber\" component in a Cyber-Physical System?", "options": ["It acts as a separate entity from the physical components", "It serves as the \"central nervous system\" to enhance physical operations", "It focuses solely on data storage and retrieval", "It replaces all physical components in the system"], "correctAnswer": 1, "answer": 1}, {"id": 4, "type": "mcq", "question": "Identify the key drivers for the development of Cyber-Physical Systems:", "options": ["Entertainment and social media advancements", "Security, economic competitiveness, and societal needs", "Purely academic research interests", "Reduction in technological capabilities"], "correctAnswer": 1, "answer": 1}, {"id": 5, "type": "mcq", "question": "Which of the following best summarizes the challenges faced in implementing Cyber-Physical Systems?", "options": ["Lack of physical components in modern systems", "Overabundance of security measures hindering integration", "Security vulnerabilities, integration with legacy systems, and ensuring real-time reliability", "Simplicity of design leading to reduced functionality"], "correctAnswer": 2, "answer": 2}, {"id": 6, "type": "short", "question": "Identify two main characteristics of Cyber-Physical Systems.", "blanks": [{"id": 1, "answer": "Adaptability"}, {"id": 2, "answer": "Autonomy"}, {"id": 3, "answer": "Efficiency"}, {"id": 4, "answer": "Reliability"}, {"id": 5, "answer": "Safety"}]}, {"id": 7, "type": "short", "question": "Describe the role of sensors and actuators in a Cyber-Physical System.", "blanks": [{"id": 1, "answer": "Sensors bridge physical-to-cyber components"}, {"id": 2, "answer": "Actuators bridge cyber-to-physical components"}]}, {"id": 8, "type": "short", "question": "Which two key drivers are motivating the development of Cyber-Physical Systems?", "blanks": [{"id": 1, "answer": "Security concerns"}, {"id": 2, "answer": "Economic competitiveness"}, {"id": 3, "answer": "Societal needs"}, {"id": 4, "answer": "Technical advancements"}]}, {"id": 9, "type": "tf", "question": "Cyber-Physical Systems (CPS) integrate computational subsystems with physical subsystems to enhance operations and control.", "correctAnswer": true, "answer": true}, {"id": 10, "type": "tf", "question": "The Internet of Things (IoT) is identical to Cyber-Physical Systems in terms of functionality and scope.", "correctAnswer": false, "answer": false}, {"id": 11, "type": "tf", "question": "Cyber-Physical Systems can range in scale from small building management systems to large continental smart grids.", "correctAnswer": true, "answer": true}, {"id": 12, "type": "tf", "question": "Security vulnerabilities are not a significant challenge in the development of Cyber-Physical Systems.", "correctAnswer": false, "answer": false}, {"id": 13, "type": "tf", "question": "Smart grids and intelligent transportation systems are examples of Cyber-Physical Systems applications in the energy and transportation sectors.", "correctAnswer": true, "answer": true}, {"id": 14, "type": "multi", "question": "Which of the following best evaluate the key drivers for cyber-physical systems development? (Select all that apply)", "options": ["Increasing need for entertainment and leisure technologies", "Rising security vulnerabilities and attacks motivating trustworthy, resilient systems", "Economic competitiveness demands for improved efficiency", "Societal needs to improve quality of life and handle dangerous tasks", "Technical drivers for greater reliability, automation, and connectivity"], "correctAnswers": [1, 2, 3, 4]}, {"id": 15, "type": "multi", "question": "Evaluate the following statements about cyber-physical systems (CPS). Which are accurate characterizations? (Select all that apply)", "options": ["CPS are solely focused on improving computational capabilities without physical world interaction", "CPS integrate computational and physical processes to solve problems neither could address alone", "CPS emphasize tight coupling and interdependency between cyber and physical components", "CPS are limited to small-scale applications like individual building management", "CPS have the potential to increase efficiency, flexibility, autonomy, awareness, and resiliency"], "correctAnswers": [1, 2, 4]}, {"id": 16, "type": "multi", "question": "Which of the following best justify the importance of studying cyber-physical systems? (Select all that apply)", "options": ["CPS are expected to drive 21st-century innovation similar to the Internet's impact in the 20th century", "CPS have limited applications and are not likely to impact major industries", "CPS integrate multiple disciplines, blending sciences, engineering, and problem-solving", "CPS permeate critical sectors like manufacturing, healthcare, agriculture, and transportation", "Understanding CPS is crucial for addressing future technological challenges and opportunities"], "correctAnswers": [0, 2, 3, 4]}, {"id": 17, "type": "multi", "question": "Evaluate the following challenges in cyber-physical systems. Which represent the most serious issues that need to be addressed? (Select all that apply)", "options": ["Ensuring system reliability and safety in real-time operations", "Managing security vulnerabilities in interconnected systems", "Integrating CPS with existing legacy and heterogeneous setups", "Developing more entertaining user interfaces for CPS applications", "Providing suitable safety and security guarantees for computer control of physical processes"], "correctAnswers": [0, 1, 2, 4]}, {"id": 18, "type": "multi", "question": "Which of the following best evaluate the key differences between cyber-physical systems (CPS) and related concepts? (Select all that apply)", "options": ["CPS generalizes embedded systems to multi-tasking with distributed networks", "CPS emphasizes distributed processing and networking more than traditional robotics", "CPS adds control, computation, and human interaction aspects beyond IoT's focus on communication networks", "CPS is more limited in scope compared to Big Data analytics", "CPS integrates cyber capabilities with physical capabilities, unlike purely software-based systems"], "correctAnswers": [0, 1, 2, 4]}, {"id": 19, "type": "mcq", "question": "What does CPS stand for?", "options": ["Computer Processing Systems", "Cyber-Physical Systems", "Control and Protection Systems", "Critical Process Systems"], "correctAnswer": 1, "answer": 1}, {"id": 20, "type": "mcq", "question": "Which of the following is NOT mentioned as a key milestone in the evolution of CPS?", "options": ["Embedded systems", "Sensor networks", "Secure networked control systems", "Artificial Intelligence"], "correctAnswer": 3, "answer": 3}, {"id": 21, "type": "mcq", "question": "What does OT stand for in the industrial context?", "options": ["Operational Technologies", "Organizational Techniques", "Output Tracking", "Online Transactions"], "correctAnswer": 0, "answer": 0}, {"id": 22, "type": "mcq", "question": "Which of the following is NOT listed as a component of Industrial Control Systems (ICS)?", "options": ["SCADA", "PLCs", "DCS", "ERP"], "correctAnswer": 3, "answer": 3}, {"id": 23, "type": "mcq", "question": "What are the three main zones in the Purdue Model for ICS/OT?", "options": ["Enterprise Zone, DMZ, Control System Zone", "IT Zone, OT Zone, Security Zone", "Business Zone, Network Zone, Physical Zone", "Planning Zone, Execution Zone, Monitoring Zone"], "correctAnswer": 0, "answer": 0}, {"id": 24, "type": "short", "question": "How would you apply the principles of CPS to design a smart traffic management system for a busy city intersection?", "blanks": [{"id": 1, "answer": "Integrate sensors to detect traffic flow, use real-time computing to process data, implement feedback control to adjust traffic signals, ensure safety-critical operations"}]}, {"id": 25, "type": "short", "question": "Predict potential challenges in implementing a CPS for a large-scale water treatment facility.", "blanks": [{"id": 1, "answer": "Ensuring real-time data processing, managing hybrid discrete and continuous systems, addressing safety and security concerns, integrating legacy OT systems"}]}, {"id": 26, "type": "tf", "question": "CPS stands for Cyber-Physical Systems and emerged from transforming purely electrical/mechanical systems into integrated cyber-physical ones.", "correctAnswer": true, "answer": true}, {"id": 27, "type": "tf", "question": "Embedded systems are defined as uncoupled physical and cyber components for general tasks.", "correctAnswer": false, "answer": false}, {"id": 28, "type": "tf", "question": "The Purdue Model for ICS/OT includes three main zones: The Business Zone, The DMZ (Demilitarized Zone), and The System Design Zone.", "correctAnswer": false, "answer": false}, {"id": 29, "type": "tf", "question": "OT stands for Operational Technologies and refers to technologies used to manage and control systems and critical infrastructure.", "correctAnswer": true, "answer": true}, {"id": 30, "type": "tf", "question": "In the Purdue Model, the Enterprise Zone has a direct connection to OT at Level 5.", "correctAnswer": false, "answer": false}, {"id": 31, "type": "multi", "question": "Which of the following best justify the importance of cross-cutting technologies in Cyber-Physical Systems (CPS)? Select all that apply.", "options": ["They enable modularity and adaptability in CPS design", "They ensure resilience and cybersecurity in CPS operations", "They allow for standardization across different CPS implementations", "They facilitate testing and autonomy in CPS development", "They eliminate the need for human oversight in CPS"], "correctAnswers": [0, 1, 2, 3]}, {"id": 32, "type": "multi", "question": "Evaluate the following statements about Operational Technologies (OT) and select those that best represent their critical role in industrial settings:", "options": ["OT systems are designed to collect data, control and monitor physical processes in real time", "OT provides relevant alerts and notifications, ensuring safety and reliability", "OT systems are always connected to the internet for optimal performance", "OT is critical to industrial operations and efficiency", "OT systems are primarily used for business planning and logistics"], "correctAnswers": [0, 1, 3]}, {"id": 33, "type": "multi", "question": "Which of the following arguments best justify the use of the Purdue Model for ICS/OT security? Select all that apply.", "options": ["It provides a framework for organizing systems based on risk and security needs", "It establishes clear boundaries for network segmentation and security isolation", "It eliminates all potential vulnerabilities in the OT environment", "It facilitates control between IT and OT components", "It allows for unrestricted data flow between all levels of the organization"], "correctAnswers": [0, 1, 3]}, {"id": 34, "type": "multi", "question": "Evaluate the following security measures for the Enterprise Zone in the Purdue Model. Which are most effective in protecting the OT environment?", "options": ["Implementing strong access controls and data encryption at Level 5", "Regular monitoring and use of IDS/IPS at Level 5", "Monitoring and analyzing traffic between Level 4 and OT", "Implementing anomaly detection at Level 4", "Allowing direct connections between Level 5 and OT systems"], "correctAnswers": [0, 1, 2, 3]}, {"id": 35, "type": "multi", "question": "Which of the following best justify the importance of the DMZ Zone in the Purdue Model for ICS/OT security?", "options": ["It acts as a security buffer between OT and IT environments", "It includes systems for communication between OT and IT networks", "It prevents unauthorized access to the OT environment from the IT network", "It eliminates the need for security measures in other zones", "It allows for unrestricted data flow between OT and IT systems"], "correctAnswers": [0, 1, 2]}, {"id": 36, "type": "mcq", "question": "Which level of the Purdue Model contains all ICS/OT components that directly control physical processes?", "options": ["Level 3 - Site Operation", "Level 2 - Supervisory Control", "Level 1 - Process Control", "Level 0 - Physical Process"], "correctAnswer": 3, "answer": 3}, {"id": 37, "type": "mcq", "question": "Explain the primary function of SCADA systems in industrial organizations.", "options": ["To manage human resources and payroll", "To monitor and control geographically dispersed assets", "To design new industrial equipment", "To handle customer service inquiries"], "correctAnswer": 1, "answer": 1}, {"id": 38, "type": "mcq", "question": "Identify the level of the Purdue Model that is responsible for production planning, scheduling, and performance monitoring.", "options": ["Level 0 - Physical Process", "Level 1 - Process Control", "Level 2 - Supervisory Control", "Level 3 - Site Operation"], "correctAnswer": 3, "answer": 3}, {"id": 39, "type": "mcq", "question": "Which of the following best describes the role of Remote Terminal Units (RTUs) in a SCADA system?", "options": ["They provide a graphical interface for operators", "They process and store all collected data", "They interface with field equipment and translate sensor data", "They manage the overall network security"], "correctAnswer": 2, "answer": 2}, {"id": 40, "type": "mcq", "question": "Which component of a SCADA system is responsible for gathering data from RTUs or PLCs to make decisions?", "options": ["Human-Machine Interface (HMI)", "Supervisory system", "Communication infrastructure", "Programmable Logic Controllers (PLCs)"], "correctAnswer": 1, "answer": 1}, {"id": 41, "type": "tf", "question": "The Control Zone is the highest level in the Purdue model for ICS/OT.", "correctAnswer": false, "answer": false}, {"id": 42, "type": "tf", "question": "SCADA stands for Supervisory Control And Data Acquisition.", "correctAnswer": true, "answer": true}, {"id": 43, "type": "tf", "question": "Level 3 in the Purdue model is responsible for site operations and integrates with business-level applications.", "correctAnswer": true, "answer": true}, {"id": 44, "type": "tf", "question": "Programmable Logic Controllers (PLCs) are found at Level 2 of the Purdue model.", "correctAnswer": false, "answer": false}, {"id": 45, "type": "tf", "question": "SCADA systems enable operators to collect data, issue commands, and respond to alarms remotely.", "correctAnswer": true, "answer": true}, {"id": 46, "type": "multi", "question": "Analyze the Purdue Model for ICS. Which of the following statements accurately describe components of the Control Zone? (Select all that apply)", "options": ["Level 3 systems are responsible for production planning and scheduling", "Level 2 includes SCADA systems and human-machine interfaces", "Level 1 contains field-level devices like PLCs and RTUs", "Level 0 represents the corporate IT network", "Level 1 is responsible for integrating with business-level applications"], "correctAnswers": [0, 1, 2]}, {"id": 47, "type": "multi", "question": "Analyze the core functions of SCADA systems. Which of the following accurately describe SCADA capabilities? (Select all that apply)", "options": ["Monitoring and controlling geographically dispersed assets", "Providing centralized control and data collection", "Enabling remote operation and alarm response", "Directly manipulating physical processes without human intervention", "Replacing all human decision-making in industrial processes"], "correctAnswers": [0, 1, 2]}, {"id": 48, "type": "multi", "question": "Investigate the components of a typical SCADA architecture. Which of the following are key elements of SCADA systems? (Select all that apply)", "options": ["Human-Machine Interface (HMI)", "Remote Terminal Units (RTUs) or Programmable Logic Controllers (PLCs)", "Supervisory system for data processing and decision-making", "Communication infrastructure for data exchange", "Autonomous robots for physical process control"], "correctAnswers": [0, 1, 2, 3]}, {"id": 49, "type": "short", "question": "Analyze the core functions of a SCADA system. How do these functions contribute to efficient industrial process management?", "blanks": [{"id": 1, "answer": "Real-time data gathering and monitoring"}, {"id": 2, "answer": "Automated control of complex processes"}, {"id": 3, "answer": "Alarm management and response"}, {"id": 4, "answer": "Data visualization through HMIs"}]}, {"id": 50, "type": "short", "question": "Identify the key components of a typical SCADA architecture. How do these components work together to enable supervisory control and data acquisition?", "blanks": [{"id": 1, "answer": "HMI for operator interaction"}, {"id": 2, "answer": "RTUs/PLCs for field device interfacing"}, {"id": 3, "answer": "Supervisory system for data processing and decision-making"}, {"id": 4, "answer": "Communication infrastructure for data exchange"}]}, {"id": 51, "type": "short", "question": "Examine the relationship between Level 2 (Supervisory Control) and Level 1 (Process Control) in the Purdue Model. How do these levels interact to maintain process control?", "blanks": [{"id": 1, "answer": "Level 2 systems monitor and adjust control settings"}, {"id": 2, "answer": "Level 1 devices execute control logic based on Level 2 inputs"}]}, {"id": 52, "type": "matching", "question": "Match each of the following components to their respective levels as per the Purdue Model for ICS.", "pairs": [{"left": "Robotic Arm", "right": "Level 4/5"}, {"left": "Supply Chain Management (SCM)", "right": "Level 3.5"}, {"left": "Email server", "right": "Level 3"}, {"left": "Remote Access", "right": "Level 3"}, {"left": "HMI", "right": "Level 2"}, {"left": "PLC", "right": "Level 1"}, {"left": "Data Historian", "right": "Level 0"}]}, {"id": 53, "type": "matching", "question": "Match each of the following components to their respective levels as per the Purdue Model for ICS.", "pairs": [{"left": "Engineering Workstation", "right": "Level 4/5"}, {"left": "HMI", "right": "Level 3.5"}, {"left": "App Server", "right": "Level 3"}, {"left": "Enterprise Resource Planning (ERP)", "right": "Level 2"}, {"left": "Fluid Flow Valve", "right": "Level 1"}, {"left": "PLC", "right": "Level 0"}, {"left": "Web server", "right": "Level 1"}]}, {"id": 54, "type": "matching", "question": "Match each of the following components to their respective levels as per the Purdue Model for ICS.", "pairs": [{"left": "Patch Server", "right": "Level 4/5"}, {"left": "Engineering Workstation", "right": "Level 3.5"}, {"left": "PLC", "right": "Level 3"}, {"left": "Electricity Meter", "right": "Level 2"}, {"left": "SCADA", "right": "Level 1"}, {"left": "User", "right": "Level 0"}, {"left": "Domain Controller", "right": "Level 1"}]}, {"id": 55, "type": "mcq", "question": "Evaluate the effectiveness of Modbus as a communication protocol for industrial automation. Which of the following arguments best justifies its continued use in modern SCADA systems?", "options": ["Modbus offers advanced encryption and security features, making it the safest choice for critical infrastructure.", "The simplicity, open standard nature, and versatility of Modbus make it ideal for integrating legacy and modern devices in industrial settings.", "Modbus provides the highest data transfer rates among all industrial communication protocols, ensuring real-time performance.", "The proprietary nature of Modbus ensures that only certified devices can be used, guaranteeing system reliability."], "correctAnswer": 1, "answer": 1}, {"id": 56, "type": "mcq", "question": "Given the evolution of industrial communication needs, which critique best addresses the weaknesses in Modbus protocol design for modern applications?", "options": ["Modbus lacks support for Ethernet-based communication, limiting its use in modern networked environments.", "The protocol's simplicity makes it unsuitable for complex data structures required in modern automation systems.", "Modbus's lack of native security features and limited addressing space pose challenges in large-scale, security-sensitive industrial deployments.", "The master-slave communication model of Modbus is too rigid for flexible, distributed control systems."], "correctAnswer": 2, "answer": 2}, {"id": 57, "type": "mcq", "question": "Evaluate the suitability of Modbus variants for different industrial applications. Which of the following statements presents the most accurate assessment?", "options": ["Modbus ASCII is always preferable due to its human-readable format, despite its lower efficiency.", "Modbus TCP is the best choice for all applications due to its support for multiple concurrent connections.", "Modbus RTU is optimal for high-speed, real-time control applications in serial environments, while Modbus TCP offers better scalability for large, networked systems.", "The choice of Modbus variant is irrelevant as they all offer identical performance and features."], "correctAnswer": 2, "answer": 2}, {"id": 58, "type": "mcq", "question": "Considering the data model of Modbus, which argument best justifies its continued relevance in diverse industrial applications?", "options": ["The complex data structures of Modbus allow for representation of any industrial process.", "The use of floating-point numbers in Modbus ensures high precision in all measurements.", "The simplicity of coils and registers in Modbus provides a flexible foundation for representing various industrial data types while maintaining efficiency.", "Modbus's data model is outdated and unsuitable for modern industrial applications."], "correctAnswer": 2, "answer": 2}, {"id": 59, "type": "mcq", "question": "Which description best explains the purpose of Modbus in industrial automation?", "options": ["To encrypt data transmission between devices", "To facilitate integration of SCADA and PLC systems for efficient process control", "To replace Ethernet in industrial settings", "To program PLCs directly"], "correctAnswer": 1, "answer": 1}, {"id": 60, "type": "mcq", "question": "Identify the correct components of a Modbus RTU frame structure:", "options": ["Address, Function Code, Data, CRC", "MBAP Header, Function Code, Data", "Transaction ID, Protocol ID, Length, Unit ID", "Slave ID, Master ID, Data, Checksum"], "correctAnswer": 0, "answer": 0}, {"id": 61, "type": "mcq", "question": "Which statement accurately describes the evolution of Modbus?", "options": ["It was initially developed for wireless communication", "It has always been based on TCP/IP", "It evolved from serial (RS-232/485) to TCP/IP for modern SCADA integration", "It was originally designed for home automation"], "correctAnswer": 2, "answer": 2}, {"id": 62, "type": "mcq", "question": "Explain the main difference between Modbus RTU and Modbus TCP frame structures:", "options": ["Modbus RTU uses ASCII encoding while TCP uses binary", "Modbus RTU has a larger frame size than TCP", "Modbus TCP uses an MBAP header instead of CRC for error checking", "Modbus RTU supports more slave devices than TCP"], "correctAnswer": 2, "answer": 2}, {"id": 63, "type": "mcq", "question": "Which of the following best describes the data types supported by Modbus?", "options": ["Strings, Integers, Floats, and Booleans", "Coils, Discrete Inputs, Input Registers, and Holding Registers", "Bytes, Words, Double Words, and Quad Words", "Arrays, Structures, Unions, and Enums"], "correctAnswer": 1, "answer": 1}, {"id": 64, "type": "tf", "question": "Modbus is a serial communication protocol developed for PLCs and widely used in industrial automation.", "correctAnswer": true, "answer": true}, {"id": 65, "type": "tf", "question": "The Modbus protocol supports up to 247 slave devices.", "correctAnswer": true, "answer": true}, {"id": 66, "type": "tf", "question": "Modbus TCP uses by default port 502 for communication.", "correctAnswer": true, "answer": true}, {"id": 67, "type": "tf", "question": "In Modbus, there are five main data types: Coils, Discrete Inputs, Input Registers, Holding Registers, and Analog Outputs.", "correctAnswer": false, "answer": false}, {"id": 68, "type": "tf", "question": "Modbus is an open standard protocol that enables master-slave communication over serial or TCP/IP connections.", "correctAnswer": true, "answer": true}, {"id": 69, "type": "tf", "question": "The Modbus protocol was originally developed for communication between programmable logic controllers (PLCs) in industrial automation.", "correctAnswer": true, "answer": true}, {"id": 70, "type": "tf", "question": "Modbus TCP uses a cyclic redundancy check (CRC) for error detection, similar to Modbus RTU.", "correctAnswer": false, "answer": false}, {"id": 71, "type": "multi", "question": "Which of the following correctly describe Modbus? (Select all that apply)", "options": ["A serial communication protocol developed for PLCs", "An application-level protocol designed to transfer data over a serial layer", "A proprietary protocol owned by Schneider Electric", "A protocol that supports up to 247 slave devices", "A protocol that operates on a publish-subscribe model"], "correctAnswers": [0, 1, 3]}, {"id": 72, "type": "multi", "question": "Which of the following are key features of Modbus? (Select all that apply)", "options": ["Simplicity in design", "Open standard with no licensing fees", "Native encryption", "Support for multiple physical layers", "Use of registers and coils for data representation"], "correctAnswers": [0, 1, 3, 4]}, {"id": 73, "type": "multi", "question": "Which of the following data types are supported by Modbus? (Select all that apply)", "options": ["Coils", "Discrete Inputs", "Input Registers", "Holding Registers", "Floating Point Registers"], "correctAnswers": [0, 1, 2, 3]}, {"id": 74, "type": "multi", "question": "Which of the following are components of a Modbus RTU frame? (Select all that apply)", "options": ["Slave ID", "Function Code", "Data", "CRC-16", "MBAP Header"], "correctAnswers": [0, 1, 2, 3]}, {"id": 75, "type": "multi", "question": "Which of the following are components of a Modbus TCP frame's MBAP header? (Select all that apply)", "options": ["Transaction ID", "Protocol ID", "Length", "Unit ID", "CRC"], "correctAnswers": [0, 1, 2, 3]}, {"id": 76, "type": "multi", "question": "Which of the following statements accurately describe the Modbus TCP frame structure?", "options": ["It uses a MBAP header instead of CRC for error checking", "The MBAP header is 7 bytes long", "It includes a Unit ID field for addressing multiple devices", "It has a maximum frame size of 256 bytes", "It uses port 502 for communication"], "correctAnswers": [0, 1, 2, 4]}, {"id": 77, "type": "multi", "question": "Which of these are valid Modbus data types? (Select all that apply)", "options": ["Coils (1-bit, read/write)", "Discrete Inputs (1-bit, read-only)", "Input Registers (16-bit, read-only)", "Holding Registers (16-bit, read/write)", "Float Registers (32-bit, read/write)"], "correctAnswers": [0, 1, 2, 3]}, {"id": 78, "type": "multi", "question": "Which of these are valid Modbus function codes? (Select all that apply)", "options": ["01 (Read Coils)", "03 (Read Holding Registers)", "05 (Write Single Coil)", "10 (Write Multiple Registers)", "20 (Read File Record)"], "correctAnswers": [0, 1, 2, 3]}, {"id": 79, "type": "short", "question": "What are the four main data types used in Modbus?", "blanks": [{"id": 1, "answer": "Coils"}, {"id": 2, "answer": "Discrete Inputs"}, {"id": 3, "answer": "Input Registers"}, {"id": 4, "answer": "Holding Registers"}]}, {"id": 80, "type": "short", "question": "What is the maximum number of slave devices supported by Modbus?", "blanks": [{"id": 1, "answer": "247"}]}, {"id": 81, "type": "short", "question": "What is the standard port number used for Modbus TCP?", "blanks": [{"id": 1, "answer": "502"}]}, {"id": 82, "type": "short", "question": "Explain the primary purpose of the Modbus protocol in industrial automation.", "blanks": [{"id": 1, "answer": "To transfer data between PLCs and devices for SCADA and device communication"}]}, {"id": 83, "type": "short", "question": "Describe the key difference between Modbus RTU and Modbus TCP frame structures.", "blanks": [{"id": 1, "answer": "Modbus RTU uses CRC for error checking, while Modbus TCP uses MBAP header"}]}, {"id": 84, "type": "short", "question": "Outline two key benefits of using Modbus in industrial automation.", "blanks": [{"id": 1, "answer": "Easy integration with legacy and modern devices"}, {"id": 2, "answer": "Wide vendor support due to open standard"}, {"id": 3, "answer": "Low resource usage"}, {"id": 4, "answer": "Supports both serial and Ethernet communications"}]}, {"id": 85, "type": "short", "question": "How would you construct a basic Modbus RTU frame to read 3 holding registers starting from address 40108 from slave device 21?", "blanks": [{"id": 1, "answer": "15 03 00 6B 00 03"}]}, {"id": 86, "type": "short", "question": "Predict how changing from Modbus RTU to Modbus TCP would affect the frame structure when reading multiple registers.", "blanks": [{"id": 1, "answer": "Replace slave address and CRC with MBAP header"}, {"id": 2, "answer": "Add Transaction ID, Protocol ID, and Length fields"}]}, {"id": 87, "type": "short", "question": "How would you classify different industrial sensors (e.g. temperature, pressure, flow) using Modbus data types for efficient communication?", "blanks": [{"id": 1, "answer": "Use Input Registers for read-only sensor data"}, {"id": 2, "answer": "Use Holding Registers for configurable sensor parameters"}]}, {"id": 88, "type": "long", "question": "Describe the four main Modbus data types and their characteristics. How do these data types contribute to Modbus' versatility in industrial automation?", "answer": "1. Discrete Inputs \u2013 These are read-only single-bit values (0 or 1) used to represent the status of digital signals, such as a sensor's on/off condition.\n\n2. Coils \u2013 These are read/write single-bit values, used for controlling or monitoring outputs like relays or indicator lights.\n\n3. Input Registers \u2013 These are 16-bit read-only values, typically used to hold data from analog input devices such as temperature or pressure sensors.\n\n4. Holding Registers \u2013 These are 16-bit read/write values, often used for configuration parameters, control setpoints, or analog output commands."}, {"id": 89, "type": "long", "question": "Identify and explain three key features of Modbus that have contributed to its widespread use in industrial automation. Provide examples of how these features benefit industrial applications.", "answer": "1. Simplicity and Standardization \u2013 Modbus uses a straightforward request/response format and open standard, allowing devices from different manufacturers to communicate easily. Example: Siemens sensors can talk to a pressure sensor from Honeywell without custom software.\n\n2. Reliability and Error Checking \u2013 Modbus incorporates robust error detection (CRC in RTU mode) and exception codes. Example: In harsh factory environments, CRC helps ensure accurate data transmission over serial bus units.\n\n3. Flexibility Across Media \u2013 Modbus can operate over serial lines (Modbus RTU), human-readable ASCII (Modbus ASCII), and Ethernet (Modbus TCP). Example: Legacy machinery can use RTU via RS-485, while new IoT gateways connect using Modbus TCP \u2014 both supporting the same command structure."}, {"id": 90, "type": "long", "question": "Outline the basic structure of a Modbus RTU frame. Using the example below, interpret each component of the frame and explain its purpose.", "answer": "Component | Size | Purpose\nAddress | 1 byte | Identifies the target slave device (1\u2013247; 0 reserved for broadcast).\nFunction Code | 1 byte | Specifies the requested action (e.g., read coils or write register).\nData | N bytes | Contains the parameters or values being read/written (e.g., register addresses, quantities).\nCRC (Cyclic Redundancy Check) | 2 bytes | Used for error checking to ensure integrity of the communication."}, {"id": 91, "type": "short", "question": "Write a Modbus TCP request to read a single coil starting at the address 0. Use 00 38 as transaction id.\nHint: The function code to read coils is 01", "blanks": [{"id": 1, "answer": "00 38 00 00 00 06 01 01 00 00 00 01"}]}, {"id": 92, "type": "short", "question": "Write a Modbus TCP request to read 8 bits start at address 2. Use 00 41 for transaction id.\nHint: The function code to read coils is 01", "blanks": [{"id": 1, "answer": "00 41 00 00 00 06 01 01 00 02 00 08"}]}, {"id": 93, "type": "short", "question": "What is the function code used in the following Modbus TCP request: 00 01 00 00 00 06 15 03 00 6B 00 03", "blanks": [{"id": 1, "answer": "03"}]}, {"id": 94, "type": "short", "question": "Consider the following Modbus RTU request to read holding registers: 15 03 00 6B 00 04 77 03\nHow many registers are requested in this frame?", "blanks": [{"id": 1, "answer": "4"}]}, {"id": 95, "type": "short", "question": "Consider the following Modbus RTU request to read holding registers: 15 03 00 6B 00 04 77 03\nWhat does 77 03 represent in this frame?", "blanks": [{"id": 1, "answer": "CRC"}]}, {"id": 96, "type": "short", "question": "Consider the following Modbus RTU request to read holding registers: 15 03 00 6B 00 04 77 03\nWhat is the data address of the first register requested?", "blanks": [{"id": 1, "answer": "00 6B"}]}, {"id": 97, "type": "short", "question": "Consider the following Modbus RTU frame request: 01 03 00 00 00 02 C4 0B.\nWhat is the Slave id addressed in this frame?", "blanks": [{"id": 1, "answer": "01"}]}, {"id": 98, "type": "tf", "question": "DNP3 operates at OSI layers 1, 2, and 7.", "correctAnswer": true, "answer": true}, {"id": 99, "type": "tf", "question": "The standard port number for DNP3 over TCP is 20000.", "correctAnswer": true, "answer": true}, {"id": 100, "type": "tf", "question": "DNP3 uses a hierarchical system architecture that only supports one-on-one communication between master and outstation.", "correctAnswer": false, "answer": false}, {"id": 101, "type": "tf", "question": "In the DNP3 data model, Class 0 represents static data while Classes 1-3 represent events by priority.", "correctAnswer": true, "answer": true}, {"id": 102, "type": "tf", "question": "The DNP3 Secure Authentication variant (SA v4/v5) introduces encryption as a mandatory feature for all DNP3 communications.", "correctAnswer": false, "answer": false}, {"id": 103, "type": "tf", "question": "In a scenario where a utility company needs to upgrade its legacy SCADA system to support modern IIoT analytics while maintaining compatibility with existing RTUs, DNP3 over TCP/IP would be the most suitable protocol variant to implement.", "correctAnswer": true, "answer": true}, {"id": 104, "type": "tf", "question": "If a power substation experiences frequent electromagnetic interference, implementing DNP3's serial variant would provide more reliable communication compared to Ethernet-based protocols.", "correctAnswer": true, "answer": true}, {"id": 105, "type": "tf", "question": "When designing a new SCADA system for a water treatment plant that requires real-time monitoring of multiple remote sites, the hierarchical DNP3 system architecture would be the most efficient configuration to use.", "correctAnswer": true, "answer": true}, {"id": 106, "type": "tf", "question": "In a situation where a utility company needs to ensure the integrity of control commands sent to remote substations, implementing DNP3 with Secure Authentication v5 would be sufficient to prevent man-in-the-middle attacks without the need for additional encryption.", "correctAnswer": false, "answer": false}, {"id": 107, "type": "tf", "question": "If a gas distribution company wants to optimize its network bandwidth usage for event reporting, configuring DNP3 to use Class 1 for all types of events would be the most effective approach.", "correctAnswer": false, "answer": false}, {"id": 108, "type": "mcq", "question": "Which OSI layers does DNP3 operate on?", "options": ["Layers 1, 2, and 3", "Layers 2, 3, and 4", "Layers 1, 2, and 7", "Layers 3, 4, and 7"], "correctAnswer": 2, "answer": 2}, {"id": 109, "type": "mcq", "question": "What is the standard port number used for DNP3 over TCP?", "options": ["8080", "20000", "443", "502"], "correctAnswer": 1, "answer": 1}, {"id": 110, "type": "mcq", "question": "Which of the following is NOT one of the four classes in the DNP3 data model?", "options": ["Class 0 (static)", "Class 1 (events)", "Class 2 (events)", "Class 4 (dynamic)"], "correctAnswer": 3, "answer": 3}, {"id": 111, "type": "mcq", "question": "Which of the following best describes the purpose of DNP3 protocol?", "options": ["To enable secure internet browsing", "To facilitate reliable data exchange in SCADA systems", "To manage email communications in industrial settings", "To control traffic signals in urban areas"], "correctAnswer": 1, "answer": 1}, {"id": 112, "type": "mcq", "question": "Identify the key features of DNP3 that contribute to its reliability in noisy environments.", "options": ["Encryption and decryption algorithms", "CRC checks, sequence numbers, and acknowledgments", "Real-time video streaming capabilities", "Automatic language translation"], "correctAnswer": 1, "answer": 1}, {"id": 113, "type": "mcq", "question": "Which statement accurately describes the event buffering feature in DNP3?", "options": ["It only supports static data (Class 0)", "It uses Classes 0-3 for prioritized event reporting", "It eliminates the need for time synchronization", "It is exclusively used for peer-to-peer communication"], "correctAnswer": 1, "answer": 1}, {"id": 114, "type": "mcq", "question": "Explain the primary difference between DNP3 Serial and DNP3 TCP/IP variants.", "options": ["DNP3 Serial uses encryption while TCP/IP does not", "DNP3 Serial operates on RS-232/485, while TCP/IP uses Ethernet", "DNP3 Serial supports more devices than TCP/IP", "DNP3 Serial is newer and more advanced than TCP/IP"], "correctAnswer": 1, "answer": 1}, {"id": 115, "type": "mcq", "question": "Which description best summarizes the DNP3 data model structure?", "options": ["It uses a flat file system with no hierarchical structure", "It is based on a relational database model", "It is object-oriented with groups and variations for different data types", "It uses XML-based data structures exclusively"], "correctAnswer": 2, "answer": 2}, {"id": 116, "type": "mcq", "question": "In a scenario where a utility company needs to upgrade its SCADA system to support both legacy RTUs and modern IIoT devices, which DNP3 variant would be most appropriate to implement?", "options": ["DNP3 Serial Variant", "DNP3 TCP/IP Variant", "DNP3 Secure Authentication Variant", "DNP3 Object-Oriented Variant"], "correctAnswer": 1, "answer": 1}, {"id": 117, "type": "mcq", "question": "A power company is experiencing frequent communication errors in its substation monitoring system. How could DNP3 be applied to improve reliability in this noisy environment?", "options": ["Implement DNP3's robust error handling with CRC checks and sequence numbers", "Switch to a proprietary protocol with better noise immunity", "Increase the polling frequency of all devices", "Replace all communication lines with fiber optic cables"], "correctAnswer": 0, "answer": 0}, {"id": 118, "type": "mcq", "question": "In a water treatment plant using DNP3, how would you configure the protocol to ensure that sudden changes in water quality are reported immediately to the control center?", "options": ["Use polled mode with a high frequency", "Implement unsolicited reporting for critical parameters", "Increase the number of master stations", "Apply the DNP3 Secure Authentication Variant"], "correctAnswer": 1, "answer": 1}, {"id": 119, "type": "mcq", "question": "A utility company wants to analyze the sequence of events leading to a power outage. Which DNP3 feature would be most useful in reconstructing the timeline of events?", "options": ["Multi-drop support", "Time synchronization", "TCP/IP compatibility", "Object-oriented design"], "correctAnswer": 1, "answer": 1}, {"id": 120, "type": "mcq", "question": "What characteristic of DNP3's frame structure best exemplifies its efficiency in low-bandwidth environments?", "options": ["Big-endian byte order", "Support for 65,520 addresses", "Maximum frame size of 292 octets", "Use of CRC for each 16 data bytes"], "correctAnswer": 2, "answer": 2}, {"id": 121, "type": "mcq", "question": "Examine the DNP3 data model. Which feature most effectively demonstrates its capability for prioritized event reporting?", "options": ["Object-oriented structure with 100+ groups", "Support for up to 65k points", "Division into Class 0 (static) and Classes 1-3 (events)", "Device-specific mapping without universal metadata"], "correctAnswer": 2, "answer": 2}, {"id": 122, "type": "multi", "question": "Which of the following are key features of the DNP3 protocol? (Select all that apply)", "options": ["Open standard freely available via DNP.org", "Proprietary protocol owned by a single vendor", "Robust error handling with CRC checks and sequence numbers", "Support for multi-master configurations", "Limited to single master-slave setups only"], "correctAnswers": [0, 2, 3]}, {"id": 123, "type": "multi", "question": "Which of these describe the DNP3 frame structure? (Select all that apply)", "options": ["Operates at OSI layers 1-2 and 7", "Uses big-endian byte order", "Supports up to 65,520 addresses", "Maximum frame size of 1024 octets", "Includes sync bytes, length, control, and address fields in the header"], "correctAnswers": [0, 1, 2, 4]}, {"id": 124, "type": "multi", "question": "Which of the following are variants of DNP3? (Select all that apply)", "options": ["DNP3 Serial", "DNP3 over TCP/IP", "DNP3 Secure Authentication", "DNP3 Wireless", "DNP3 Fiber Optic"], "correctAnswers": [0, 1, 2]}, {"id": 125, "type": "multi", "question": "Which of these correctly describe aspects of the DNP3 data model? (Select all that apply)", "options": ["Object-oriented structure with over 100 groups", "Uses 4 classes for data categorization", "Class 0 represents dynamic event data", "Classes 1-3 represent events by priority", "Supports up to 65,000 data points"], "correctAnswers": [0, 1, 3, 4]}, {"id": 126, "type": "multi", "question": "Which of the following are true about DNP3 function codes? (Select all that apply)", "options": ["There are 27 basic function codes", "Function code 1 is used to read static data", "Function code 5 is used to write object values", "Function codes enable masters to control remote equipment", "There are over 100 function codes available"], "correctAnswers": [0, 1, 2, 3]}, {"id": 127, "type": "multi", "question": "Which of the following correctly describe DNP3 variants? (Select all that apply)", "options": ["DNP3 over TCP uses port 20000 by default", "The serial variant is less efficient for low-bandwidth environments", "Secure Authentication variant adds challenge-response mechanisms", "DNP3 over TCP removes the need for link-layer addressing", "The Secure Authentication variant once implemented is used for all requests and responses"], "correctAnswers": [0, 2, 3]}, {"id": 128, "type": "multi", "question": "Which of the following scenarios would benefit most from implementing DNP3? (Select all that apply)", "options": ["A smart home automation system for residential use", "A large-scale water distribution network with remote monitoring stations", "An electric utility company managing a wide-area power grid", "A gas pipeline monitoring system with multiple control points", "A small office network for file sharing and printing"], "correctAnswers": [1, 2, 3]}, {"id": 129, "type": "multi", "question": "When upgrading a legacy SCADA system to support DNP3 over TCP/IP, which of the following would you need to perform? (Select all that apply)", "options": ["Replace all existing RTUs with new Ethernet-compatible devices", "Implement a gateway to encapsulate serial DNP3 frames in TCP packets", "Reconfigure master stations to use port 20000 for DNP3 communications", "Modify the application layer protocol to remove link-layer addressing", "Install fiber optic cables to all remote sites for increased bandwidth"], "correctAnswers": [1, 2]}, {"id": 130, "type": "multi", "question": "When designing a new substation automation system using DNP3, which features would you incorporate to future-proof the installation? (Select all that apply)", "options": ["Use of DNP3 over TCP/IP for compatibility with modern networks", "Implementation of Secure Authentication v5 for enhanced cybersecurity", "Configuration of multi-master support for redundancy", "Utilization of object-oriented data model for flexible point mapping", "Exclusive use of proprietary extensions for vendor lock-in"], "correctAnswers": [0, 1, 2, 3]}];
+    console.log('Embedded data loaded:', window.EMBEDDED_QUIZ_DATA ? window.EMBEDDED_QUIZ_DATA.length : 0, 'questions');
+
+    // Load quiz data from JSON file and initialize
+    async function loadQuizData() {
+      console.log('=== loadQuizData START ===');
+      try {
+        // First, attempt to fetch an external data.json located next to this HTML file.
+        // If fetch fails (file:// or CORS), we'll fall back to window.EMBEDDED_QUIZ_DATA.
+        let fetchedData = null;
+        try {
+          console.log('Attempting to fetch external data.json...');
+          const resp = await fetch('data.json', { cache: 'no-store' });
+          if (resp.ok) {
+            fetchedData = await resp.json();
+            console.log('External data.json fetched, items:', Array.isArray(fetchedData) ? fetchedData.length : 'not-array');
+          } else {
+            console.warn('data.json fetch returned non-ok response:', resp.status, resp.statusText);
+          }
+        } catch (fetchError) {
+          console.warn('Could not fetch data.json (this may be expected when opening the file via file://).', fetchError);
+        }
+
+        // Prefer fetchedData if it's a valid array, otherwise fall back to embedded data
+        let loadedData = null;
+        if (Array.isArray(fetchedData) && fetchedData.length > 0) {
+          loadedData = fetchedData;
+        } else if (typeof window.EMBEDDED_QUIZ_DATA !== 'undefined' && Array.isArray(window.EMBEDDED_QUIZ_DATA)) {
+          console.log('Using embedded quiz data as fallback.');
+          loadedData = window.EMBEDDED_QUIZ_DATA;
+        } else {
+          throw new Error('No valid quiz data found. Provide data.json or ensure embedded data is present.');
+        }
+
+        console.log('Step: Normalizing data');
+        console.log('loadedData type:', typeof loadedData);
+        console.log('loadedData is array:', Array.isArray(loadedData));
+
+        // Normalize data: map correctAnswer to answer if needed
+        quizData = loadedData.map(q => {
+          const normalized = { ...q };
+
+          // Normalize answer fields for different question types
+          if (normalized.correctAnswer !== undefined && normalized.answer === undefined) {
+            normalized.answer = normalized.correctAnswer;
+          }
+          if (Array.isArray(normalized.correctAnswers) && normalized.answer === undefined) {
+            normalized.answer = normalized.correctAnswers.slice();
+          }
+
+          if ((normalized.type === 'match' || normalized.type === 'matching') && Array.isArray(normalized.pairs)) {
+            const leftItems = normalized.pairs.map(p => p.left);
+            const rightItemsOrdered = normalized.pairs.map(p => p.right);
+            const rightItemsUnique = Array.from(new Set(rightItemsOrdered));
+            const answerIndices = normalized.pairs.map(p => rightItemsUnique.indexOf(p.right));
+
+            normalized.matchLeft = leftItems;
+            normalized.matchRight = rightItemsUnique;
+            normalized.answer = answerIndices;
+          }
+
+          // Support different blank styles from JSON files:
+          // - 'blanks' can be an array of strings (e.g. ["247"]) or an array of objects ({id, answer})
+          // - some input files use 'fillblanks' as the type; map that to a short/fib type for textarea rendering
+          if (normalized.type === 'fillblanks') {
+            // normalize to 'short' so the renderer uses a textarea
+            normalized.type = 'short';
+          }
+
+          if ((normalized.type === 'short' || normalized.type === 'fib') && !normalized.answer && Array.isArray(normalized.blanks)) {
+            // blanks may be strings or objects with an 'answer' property
+            if (normalized.blanks.length > 0) {
+              if (typeof normalized.blanks[0] === 'string') {
+                // treat blanks array as acceptable answer strings
+                normalized.answer = normalized.blanks.slice();
+              } else if (typeof normalized.blanks[0] === 'object' && normalized.blanks[0] !== null) {
+                normalized.answer = normalized.blanks.map(b => b.answer).filter(a => a !== undefined && a !== null && a !== '');
+              } else {
+                normalized.answer = [];
+              }
+            } else {
+              normalized.answer = [];
+            }
+          }
+
+          if (['essay', 'long'].includes(normalized.type)) {
+            normalized.manual = true;
+          }
+
+          if (normalized.answer === undefined) {
+            normalized.manual = true;
+          }
+
+          return normalized;
+        });
+        
+        console.log('Step 5: Data normalized');
+        console.log('quizData length:', quizData.length);
+        console.log('quizData[0]:', quizData[0]);
+        
+  console.log('Step 6: Applying initial type filter');
+  applyTypeFilter(activeTypeFilter);
+  console.log('Active quiz data length:', activeQuizData.length);
+        
+        console.log('=== loadQuizData SUCCESS ===');
+      } catch (error) {
+        console.error('=== loadQuizData ERROR ===');
+        console.error('Error loading quiz data:', error);
+        console.error('Stack trace:', error.stack);
+        const questionText = document.getElementById('question-text');
+        if (questionText) {
+          questionText.innerHTML = '<p style="color: #ff6b6b;">Error loading quiz questions. Please make sure data.json is in the same folder as this HTML file.</p><p style="color: #ff6b6b;">Error details: ' + error.message + '</p>';
+        }
+      }
+    }
+    
+    // Start loading quiz data when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadQuizData);
+    } else {
+      loadQuizData();
+    }
+  </script>
+</body>
+</html>
